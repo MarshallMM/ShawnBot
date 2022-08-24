@@ -18,8 +18,6 @@ var (
 	vl    []string
 )
 
-const KuteGoAPIURL = "https://kutego-api-xxxxx-ew.a.run.app"
-
 func init() {
 	flag.StringVar(&Token, "t", "", "Bot Token")
 	flag.Parse()
@@ -72,37 +70,40 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	if m.Content == "gm" {
-		message = "gm"
+	mes := strings.ToLower(m.Content)
+	fmt.Println(mes)
+	if strings.Index(mes, "gm") != -1 {
+		message = "Gm"
+	} else if strings.Index(mes, "gn") != -1 {
+		message = "Gn"
+	} else if strings.Index(mes, "gnn") != -1 {
+		message = "Gnn"
+	} else if strings.Index(mes, "totm") != -1 {
+		message = "Totm"
+	} else if strings.Index(mes, "trout") != -1 {
+		message = "Trout that"
+	} else if strings.Index(mes, "honk") != -1 {
+		message = "HONK HONK"
 	}
-	if m.Content == "DN" {
+	if strings.Index(mes, "dn") != -1 {
 		message = "DEEZ NUTS"
-	}
-	if strings.Index(m.Content, "dn") != -1 {
-		message = "DEEZ NUTS"
-	}
-	if strings.Index(m.Content, "DN") != -1 {
-		message = "DEEZ NUTS"
-	}
-	if strings.Index(m.Content, "ligma") != -1 {
+	} else if strings.Index(mes, "ligma") != -1 {
 		message = "LIGMA BALLS"
 	}
 	if m.Content == "testTrout" {
 		err = s.GuildMemberDelete(m.GuildID, m.Author.ID)
 		message = "trout"
 	}
-	if strings.Index(m.Content, "true") != -1 {
+	if strings.Index(mes, "true") != -1 {
 		err = s.GuildMemberDelete(m.GuildID, m.Author.ID)
 		message = "trout"
 	}
-	if strings.Index(m.Content, "where") != -1 {
+	if strings.Index(mes, "where") != -1 {
 		message = "I said where"
 	}
-	if m.Content == "totm" {
-		message = "totm"
-	}
+
 	fmt.Println(m.Author)
-	fmt.Println(m.GuildID)
+
 	if message != "hmm" {
 		// Send a text message
 		_, err = s.ChannelMessageSend(m.ChannelID, message)
