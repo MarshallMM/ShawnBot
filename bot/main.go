@@ -73,11 +73,14 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	mes := strings.ToLower(m.Content)
-	fmt.Println(mes)
-	if m.Author.ID == "9382" {
 
-		if rand.Intn(10) == 1 {
+	if m.Author.ID == "9382" {
+		ranShawn := rand.Intn(20)
+		if ranShawn == 1 {
 			message = "Ligma Balls"
+			tts = true
+		} else if ranShawn == 2 {
+			message = "Dude Shawn you are so fake"
 			tts = true
 		} else {
 			return
@@ -93,10 +96,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message = "Totm"
 	} else if strings.Index(mes, "trout") != -1 {
 		message = "Trout that"
+		tts = true
 	} else if strings.Index(mes, "honk") != -1 {
 		message = "HONK HONK"
 	} else if strings.Index(mes, "beep") != -1 {
 		message = "BEEP BEEP"
+	} else if strings.Index(mes, "csgo") != -1 {
+		message = "More like... cs NO!"
 	}
 	if strings.Index(mes, "dn") != -1 {
 		message = "DEEZ NUTS"
@@ -104,32 +110,37 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	} else if strings.Index(mes, "ligma") != -1 {
 		message = "LIGMA BALLS"
 
+	} else if strings.Index(mes, "sugondes") != -1 {
+		message = "SUCK ON THESE NUTS"
+
 	}
 	if m.Content == "testTrout" {
 		err = s.GuildMemberDelete(m.GuildID, m.Author.ID)
 		message = "trout"
-		tts = true
+
 	}
 	if strings.Index(mes, "true") != -1 {
-		err = s.GuildMemberDelete(m.GuildID, m.Author.ID)
-		message = "trout"
+		message = m.Author.Username + " said the wrong trout. shame. Ban his ass."
+		tts = true
 	}
 	if strings.Index(mes, "where") != -1 {
 		message = "I said where"
 	}
 
-	fmt.Println(m.Author)
+	fmt.Println(m.Author, m.Content)
 
 	if message != "hmm" {
 		// Send a text message
 		if rand.Intn(20) == 1 {
 			tts = true
 		}
-		if tts {
+		if tts == true {
 			_, err = s.ChannelMessageSendTTS(m.ChannelID, message)
+			fmt.Println("tts " + message)
 		} else {
 
 			_, err = s.ChannelMessageSend(m.ChannelID, message)
+			fmt.Println(message)
 		}
 
 		if err != nil {

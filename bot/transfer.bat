@@ -1,4 +1,5 @@
 cd C:\Users\marsh\ShawnBot\bot
-//env GOOS=linux GOARCH=arm GOARM=5 go build
+build.sh
 scp ShawnBot pi@192.168.1.75:/home/pi/shawnBot
 pause
+del shawnBot
