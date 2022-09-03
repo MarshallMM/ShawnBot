@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math/rand"
 	"os"
 	"os/signal"
 	"strings"
@@ -65,6 +66,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Ignore all messages created by the bot itself
 	// This isn't required in this specific example but it's a good practice.
 	message := "hmm"
+	tts := false
 	var err error
 	err = nil
 	if m.Author.ID == s.State.User.ID {
@@ -72,6 +74,15 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	mes := strings.ToLower(m.Content)
 	fmt.Println(mes)
+	if m.Author.ID == "9382" {
+
+		if rand.Intn(10) == 1 {
+			message = "Ligma Balls"
+			tts = true
+		} else {
+			return
+		}
+	}
 	if strings.Index(mes, "gm") != -1 {
 		message = "Gm"
 	} else if strings.Index(mes, "gn") != -1 {
@@ -84,15 +95,20 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message = "Trout that"
 	} else if strings.Index(mes, "honk") != -1 {
 		message = "HONK HONK"
+	} else if strings.Index(mes, "beep") != -1 {
+		message = "BEEP BEEP"
 	}
 	if strings.Index(mes, "dn") != -1 {
 		message = "DEEZ NUTS"
+
 	} else if strings.Index(mes, "ligma") != -1 {
 		message = "LIGMA BALLS"
+
 	}
 	if m.Content == "testTrout" {
 		err = s.GuildMemberDelete(m.GuildID, m.Author.ID)
 		message = "trout"
+		tts = true
 	}
 	if strings.Index(mes, "true") != -1 {
 		err = s.GuildMemberDelete(m.GuildID, m.Author.ID)
@@ -106,7 +122,16 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if message != "hmm" {
 		// Send a text message
-		_, err = s.ChannelMessageSend(m.ChannelID, message)
+		if rand.Intn(20) == 1 {
+			tts = true
+		}
+		if tts {
+			_, err = s.ChannelMessageSendTTS(m.ChannelID, message)
+		} else {
+
+			_, err = s.ChannelMessageSend(m.ChannelID, message)
+		}
+
 		if err != nil {
 			fmt.Println(err)
 		}
