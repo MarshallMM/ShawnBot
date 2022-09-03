@@ -75,7 +75,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	mes := strings.ToLower(m.Content)
 
 	if m.Author.ID == "9382" {
-		ranShawn := rand.Intn(20)
+		ranShawn := rand.Intn(100)
 		if ranShawn == 1 {
 			message = "Ligma Balls"
 			tts = true
@@ -101,7 +101,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message = "HONK HONK"
 	} else if strings.Index(mes, "beep") != -1 {
 		message = "BEEP BEEP"
-	} else if strings.Index(mes, "csgo") != -1 {
+	} else if strings.Index(mes, "cs") != -1 {
 		message = "More like... cs NO!"
 	}
 	if strings.Index(mes, "dn") != -1 {
@@ -120,7 +120,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	}
 	if strings.Index(mes, "true") != -1 {
-		message = m.Author.Username + " said the wrong trout. shame. Ban his ass."
+		message = m.Author.Username + " said the wrong trout. Ban his ass."
 		tts = true
 	}
 	if strings.Index(mes, "where") != -1 {
@@ -131,7 +131,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if message != "hmm" {
 		// Send a text message
-		if rand.Intn(20) == 1 {
+		if rand.Intn(25) == 1 {
 			tts = true
 		}
 		if tts == true {
