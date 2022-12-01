@@ -15,8 +15,6 @@ import (
 // Variables used for command line parameters
 var (
 	Token string
-	gl    []string
-	vl    []string
 )
 
 func init() {
@@ -86,44 +84,71 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 	}
-	if strings.Index(mes, "gm") != -1 {
+	if strings.Contains(mes, "gm") {
 		message = "Gm"
-	} else if strings.Index(mes, "gn") != -1 {
+	} else if strings.Contains(mes, "gn") {
 		message = "Gn"
-	} else if strings.Index(mes, "gnn") != -1 {
+	} else if strings.Contains(mes, "gnn") {
 		message = "Gnn"
-	} else if strings.Index(mes, "totm") != -1 {
+	} else if strings.Contains(mes, "totm") {
 		message = "Totm"
-	} else if strings.Index(mes, "trout") != -1 {
+	} else if strings.Contains(mes, "trout") {
 		message = "Trout that"
 		tts = true
-	} else if strings.Index(mes, "honk") != -1 {
+	} else if strings.Contains(mes, "shit") {
+		message = "Thats a Justin"
+		tts = true
+	} else if strings.Contains(mes, "shawn") {
+		message = "If shawn has a million fans, then I am one of them. If shawn has ten fans, then I am one of them. If shawn has only one fan then that is me. If shawn has no fans, then that means I am no longer on earth. If the world is against shawn, then I am against the world."
+	} else if strings.Contains(mes, "who") {
+		message = `WHO is Shawn Whitmore?
+
+		In geography, My World
+		
+		In reality, My Life
+		
+		In history, My King
+		
+		In mathematics, My Solution
+		
+		In mythology, My god
+		
+		In astronomy, My Universe
+		
+		If I'm Blind, He's Light
+		
+		If I'm Hungry, He's Food
+		
+		If I'm sick, He's Medicine
+		
+		For Me, He's Everything`
+	} else if strings.Contains(mes, "honk") {
 		message = "HONK HONK"
-	} else if strings.Index(mes, "beep") != -1 {
+	} else if strings.Contains(mes, "beep") {
 		message = "BEEP BEEP"
-	} else if strings.Index(mes, "cs") != -1 {
+	} else if strings.Contains(mes, "cs") {
 		message = "More like... cs NO!"
 	}
-	if strings.Index(mes, "dn") != -1 {
+	if strings.Contains(mes, "dn") {
 		message = "DEEZ NUTS"
 
-	} else if strings.Index(mes, "ligma") != -1 {
+	} else if strings.Contains(mes, "ligma") {
 		message = "LIGMA BALLS"
 
-	} else if strings.Index(mes, "sugondes") != -1 {
+	} else if strings.Contains(mes, "sugondes") {
 		message = "SUCK ON THESE NUTS"
 
 	}
 	if m.Content == "testTrout" {
-		err = s.GuildMemberDelete(m.GuildID, m.Author.ID)
+		_ = s.GuildMemberDelete(m.GuildID, m.Author.ID)
 		message = "trout"
 
 	}
-	if strings.Index(mes, "true") != -1 {
+	if strings.Contains(mes, "true") {
 		message = m.Author.Username + " said the wrong trout. Ban his ass."
 		tts = true
 	}
-	if strings.Index(mes, "where") != -1 {
+	if strings.Contains(mes, "where") {
 		message = "I said where"
 	}
 
@@ -134,7 +159,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		if rand.Intn(25) == 1 {
 			tts = true
 		}
-		if tts == true {
+		if tts {
 			_, err = s.ChannelMessageSendTTS(m.ChannelID, message)
 			fmt.Println("tts " + message)
 		} else {
@@ -149,5 +174,4 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	} else {
 		return
 	}
-	return
 }
