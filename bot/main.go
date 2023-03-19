@@ -11,6 +11,7 @@ import (
 
 	"io/ioutil"
 	"log"
+	"path/filepath"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -20,6 +21,7 @@ import (
 var (
 	Token           string
 	cooldownEndTime time.Time
+	Triggers        []string
 )
 
 func init() {
@@ -40,11 +42,39 @@ func ttsCooldownCheck(input bool) bool {
 
 	return input
 }
-func dojo() string {
+func iterateTextFileResponces() []string {
+	var filenames []string
+	dir := "." // current directory
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	for _, file := range files {
+		if !file.IsDir() && filepath.Ext(file.Name()) == ".txt" {
+			name := filepath.Base(file.Name())
+			name = name[:len(name)-4] // Remove the last 4 characters (i.e. ".txt")
+			filenames = append(filenames, name)
+		}
+	}
+	return filenames
+}
+func checkTriggers(mes string) {
+	for _, trigger := range Triggers {
+		if strings.Contains(mes, trigger) {
+			triggerResponse(trigger)
+
+		}
+	}
+}
+
+func triggerResponse(trigger string) string {
 	rand.Seed(time.Now().UnixNano())
 
 	// Open the text file in the same directory as the compiled binary
-	fileBytes, err := ioutil.ReadFile("./dojo.txt")
+	filepath := "./" + trigger + ".txt"
+	fileBytes, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,33 +96,10 @@ func dojo() string {
 	fmt.Println(randomLine)
 	return randomLine
 }
-func shawn() string {
-	rand.Seed(time.Now().UnixNano())
 
-	// Open the text file in the same directory as the compiled binary
-	fileBytes, err := ioutil.ReadFile("./shawn.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fileContent := string(fileBytes)
-
-	// Split the file content into lines
-	lines := strings.Split(fileContent, "\n")
-
-	// Remove leading/trailing spaces from each line
-	for i, line := range lines {
-		lines[i] = strings.TrimSpace(line)
-	}
-
-	// Choose a random line from the file
-	randomIndex := rand.Intn(len(lines))
-	randomLine := lines[randomIndex]
-
-	// Print the randomly selected line to the console
-	fmt.Println(randomLine)
-	return randomLine
-}
 func main() {
+	Triggers = iterateTextFileResponces()
+
 	//var gameList []string
 	//var vetoList []string
 	// Create a new Discord session using the provided bot token.
@@ -155,8 +162,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message = "Gm"
 	} else if strings.Contains(mes, "gn") {
 		message = "Gn"
-	} else if strings.Contains(mes, "dojo") {
-		message = dojo()
 	} else if strings.Contains(mes, "gnn") {
 		message = "Gnn"
 	} else if strings.Contains(mes, "totm") {
@@ -167,8 +172,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	} else if strings.Contains(mes, "shit") {
 		message = "Thats a Justin"
 		tts = true
-	} else if strings.Contains(mes, "shawn") {
-		message = shawn()
 	} else if strings.Contains(mes, "who") {
 		message = `WHO is Shawn Whitmore?
 
@@ -215,12 +218,17 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.Contains(mes, "true") {
 		message = m.Author.Username + " said the wrong trout. Ban his ass."
 		tts = true
-	} else if strings.Contains(mes, "where") {
-		message = "I said where"
 	}
 
 	fmt.Println(m.Author, m.Content)
-
+	//Textfile triggers
+	for _, trigger := range Triggers {
+		if strings.Contains(mes, trigger) {
+			newmessage := triggerResponse(trigger)
+			_, _ = s.ChannelMessageSend(m.ChannelID, newmessage)
+			fmt.Println(message)
+		}
+	}
 	if message != "hmm" {
 		// Send a text message
 		if rand.Intn(15) == 1 {
