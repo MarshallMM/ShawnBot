@@ -66,7 +66,32 @@ func dojo() string {
 	fmt.Println(randomLine)
 	return randomLine
 }
+func shawn() string {
+	rand.Seed(time.Now().UnixNano())
 
+	// Open the text file in the same directory as the compiled binary
+	fileBytes, err := ioutil.ReadFile("./shawn.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fileContent := string(fileBytes)
+
+	// Split the file content into lines
+	lines := strings.Split(fileContent, "\n")
+
+	// Remove leading/trailing spaces from each line
+	for i, line := range lines {
+		lines[i] = strings.TrimSpace(line)
+	}
+
+	// Choose a random line from the file
+	randomIndex := rand.Intn(len(lines))
+	randomLine := lines[randomIndex]
+
+	// Print the randomly selected line to the console
+	fmt.Println(randomLine)
+	return randomLine
+}
 func main() {
 	//var gameList []string
 	//var vetoList []string
@@ -98,10 +123,6 @@ func main() {
 
 	// Cleanly close down the Discord session.
 	dg.Close()
-}
-
-type Gopher struct {
-	Name string `json: "name"`
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -147,7 +168,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message = "Thats a Justin"
 		tts = true
 	} else if strings.Contains(mes, "shawn") {
-		message = "If shawn has a million fans, then I am one of them. If shawn has ten fans, then I am one of them. If shawn has only one fan then that is me. If shawn has no fans, then that means I am no longer on earth. If the world is against shawn, then I am against the world."
+		message = shawn()
 	} else if strings.Contains(mes, "who") {
 		message = `WHO is Shawn Whitmore?
 
@@ -202,7 +223,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if message != "hmm" {
 		// Send a text message
-		if rand.Intn(25) == 1 {
+		if rand.Intn(15) == 1 {
 			tts = true
 		}
 
