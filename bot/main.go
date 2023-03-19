@@ -222,6 +222,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	fmt.Println(m.Author, m.Content)
 	//Textfile triggers
+	fmt.Println(triggerResponse())
 	for _, trigger := range Triggers {
 		if strings.Contains(mes, trigger) {
 			newmessage := triggerResponse(trigger)
