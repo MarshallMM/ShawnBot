@@ -18,7 +18,7 @@ import (
 )
 
 // constants
-const triggerDir string = "./triggers/"
+const triggerDir string = "./bot/triggers/"
 
 // Variables used for command line parameters
 var (
