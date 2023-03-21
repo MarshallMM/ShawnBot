@@ -89,7 +89,6 @@ func triggerResponse(trigger string) string {
 }
 
 func main() {
-
 	//var gameList []string
 	//var vetoList []string
 	// Create a new Discord session using the provided bot token.
@@ -192,18 +191,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message = "More like... cs NO!"
 	}
 
-	//Overriding messages
-	if strings.Contains(mes, "dn") {
-		message = "DEEZ NUTS"
-
-	} else if strings.Contains(mes, "ligma") {
-		message = "LIGMA BALLS"
-
-	} else if strings.Contains(mes, "sugondes") {
-		message = "SUCK ON THESE NUTS"
-
-	}
-
 	//Highest Level of overriding
 	if strings.Contains(mes, "true") {
 		message = m.Author.Username + " said the wrong trout. Ban his ass."
@@ -212,11 +199,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	fmt.Println(m.Author, m.Content)
 	//Textfile triggers
-	for _, trigger := range iterateTextFileResponces() {
+	triggers := iterateTextFileResponces()
+	fmt.Println(triggers)
+	for _, trigger := range triggers {
 		if strings.Contains(mes, trigger) {
 			newmessage := triggerResponse(trigger)
 			_, _ = s.ChannelMessageSend(m.ChannelID, newmessage)
-			fmt.Println(message)
+			fmt.Println(newmessage)
 			time.Sleep(500 * time.Millisecond)
 		}
 	}
