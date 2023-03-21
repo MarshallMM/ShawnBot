@@ -18,7 +18,7 @@ import (
 )
 
 // constants
-const triggerDir string = "./bot/trigger/"
+const triggerDir string = "./triggers/"
 
 // Variables used for command line parameters
 var (
@@ -95,6 +95,7 @@ func main() {
 	//Load triggers
 	triggers = iterateTextFileResponces()
 	fmt.Println(triggers)
+
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + Token)
 	if err != nil {
@@ -150,49 +151,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		} else {
 			return
 		}
-	}
-	if strings.Contains(mes, "gm") {
-		message = "Gm"
-	} else if strings.Contains(mes, "gn") {
-		message = "Gn"
-	} else if strings.Contains(mes, "gnn") {
-		message = "Gnn"
-	} else if strings.Contains(mes, "totm") {
-		message = "Totm"
-	} else if strings.Contains(mes, "trout") {
-		message = "Trout that"
-		tts = true
-	} else if strings.Contains(mes, "shit") {
-		message = "Thats a Justin"
-		tts = true
-	} else if strings.Contains(mes, "who") {
-		message = `WHO is Shawn Whitmore?
-
-		In geography, My World
-		
-		In reality, My Life
-		
-		In history, My King
-		
-		In mathematics, My Solution
-		
-		In mythology, My god
-		
-		In astronomy, My Universe
-		
-		If I'm Blind, He's Light
-		
-		If I'm Hungry, He's Food
-		
-		If I'm sick, He's Medicine
-		
-		For Me, He's Everything`
-	} else if strings.Contains(mes, "honk") {
-		message = "HONK HONK"
-	} else if strings.Contains(mes, "beep") {
-		message = "BEEP BEEP"
-	} else if strings.Contains(mes, "cs") {
-		message = "More like... cs NO!"
 	}
 
 	//Highest Level of overriding
