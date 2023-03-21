@@ -17,10 +17,14 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// constants
+const triggerDir string = "./bot/trigger/"
+
 // Variables used for command line parameters
 var (
 	Token           string
 	cooldownEndTime time.Time
+	triggers        []string
 )
 
 func init() {
@@ -43,8 +47,7 @@ func ttsCooldownCheck(input bool) bool {
 }
 func iterateTextFileResponces() []string {
 	var filenames []string
-	dir := "." // current directory
-	files, err := ioutil.ReadDir(dir)
+	files, err := ioutil.ReadDir(triggerDir)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -64,7 +67,7 @@ func triggerResponse(trigger string) string {
 	rand.Seed(time.Now().UnixNano())
 
 	// Open the text file in the same directory as the compiled binary
-	filepath := "./" + trigger + ".txt"
+	filepath := triggerDir + trigger + ".txt"
 	fileBytes, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		log.Fatal(err)
@@ -89,8 +92,9 @@ func triggerResponse(trigger string) string {
 }
 
 func main() {
-	//var gameList []string
-	//var vetoList []string
+	//Load triggers
+	triggers = iterateTextFileResponces()
+	fmt.Println(triggers)
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + Token)
 	if err != nil {
@@ -199,7 +203,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	fmt.Println(m.Author, m.Content)
 	//Textfile triggers
-	triggers := iterateTextFileResponces()
+	//triggers := iterateTextFileResponces()
 	fmt.Println(triggers)
 	for _, trigger := range triggers {
 		if strings.Contains(mes, trigger) {
