@@ -21,7 +21,6 @@ import (
 var (
 	Token           string
 	cooldownEndTime time.Time
-	Triggers        []string
 )
 
 func init() {
@@ -60,14 +59,6 @@ func iterateTextFileResponces() []string {
 	}
 	return filenames
 }
-func checkTriggers(mes string) {
-	for _, trigger := range Triggers {
-		if strings.Contains(mes, trigger) {
-			triggerResponse(trigger)
-
-		}
-	}
-}
 
 func triggerResponse(trigger string) string {
 	rand.Seed(time.Now().UnixNano())
@@ -98,7 +89,6 @@ func triggerResponse(trigger string) string {
 }
 
 func main() {
-	Triggers = iterateTextFileResponces()
 
 	//var gameList []string
 	//var vetoList []string
@@ -222,12 +212,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	fmt.Println(m.Author, m.Content)
 	//Textfile triggers
-	fmt.Println(Triggers)
-	for _, trigger := range Triggers {
+	for _, trigger := range iterateTextFileResponces() {
 		if strings.Contains(mes, trigger) {
 			newmessage := triggerResponse(trigger)
 			_, _ = s.ChannelMessageSend(m.ChannelID, newmessage)
 			fmt.Println(message)
+			time.Sleep(500 * time.Millisecond)
 		}
 	}
 	if message != "hmm" {
